@@ -5,7 +5,6 @@ import binascii
 import gzip
 import json
 import logging
-import openpyxl
 import os
 import shutil
 import struct
