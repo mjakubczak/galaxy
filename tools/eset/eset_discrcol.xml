@@ -1,0 +1,41 @@
+<tool id="eset_discrcol" name="Choose discriminatory column" version="0.1.0">
+
+  <description>
+    in ExpressionSet
+  </description>
+
+  <command><![CDATA[
+    #import json
+    #set $lista = json.dumps({"eset": str($eset), "output": str($output)})
+    Rscript $__tool_directory__/eset_discrcol_script.R -j '$lista'
+  ]]></command>
+
+  <inputs>
+    <param name="eset" type="data" format="expression_set" label="ExpressionSet file"/>
+
+    <param name="discr_col" type="select" label="Select discriminatory col">
+      <options>
+        <filter type="data_meta" ref="eset" key="pheno_cols"/>
+        <validator type="no_options" message="Chosen ESet has no columns in phenoData!" />
+      </options>
+    </param>
+    
+  </inputs>
+
+  <outputs>
+    <data format="expression_set" name="output">
+      <actions>
+        <action name="discr_col" type="metadata" default="${discr_col}" />
+      </actions>
+    </data>
+  </outputs>
+
+  <help>
+**What it does**
+This tool allows to change the discriminatory column (expert class vector) in the provided ExpressionSet. Names of columns are obtained from the phenoData.
+Discriminatory column should cointain 2 to 10 different sample classes.
+
+**What it returns**
+ExpressionSet with changed discriminatory column.
+  </help>
+</tool>

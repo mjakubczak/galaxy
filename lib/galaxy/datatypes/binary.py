@@ -1333,6 +1333,9 @@ class ExpressionSet( rds ):
             dataset.peek = 'file does not exist'
 
     def set_meta(self, dataset, **kwd):
+        if dataset.metadata.discr_col.__class__.__name__ == 'MutationList':
+            dataset.metadata.discr_col = dataset.metadata.discr_col[0]
+
         eset_meta = self._get_eset_meta_from_rds(dataset.file_name, dataset.metadata.discr_col)
 
         dims = eset_meta.get("dims", {})

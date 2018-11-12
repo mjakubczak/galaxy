@@ -119,6 +119,9 @@
     <tool file="plotting/boxplot.xml" />
     <tool file="maf/vcf_to_maf_customtrack.xml" />
   </section>
+  <section id="eset" name="ESet manipulation">
+    <tool file="eset/eset_discrcol.xml" />
+  </section>
   <section id="spicy" name="Spicy Tools">
     <tool file="spicy/trainModel.xml" />
     <tool file="spicy/useModel.xml" />

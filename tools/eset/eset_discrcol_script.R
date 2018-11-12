@@ -4,17 +4,12 @@ opt <- optparse::parse_args(optParser)
 
 x <- spicyScript::validateInputJson(
   x = opt[["json"]],
-  requiredKeys = c("model", "inputs", "output")
+  requiredKeys = c("eset", "output")
 )
 
-print(x)
-
-write.table(
-  x = iris, 
-  file = x$output, 
-  append = FALSE,
-  quote = FALSE,
-  sep = "\t",
-  row.names = FALSE
-)
+invisible(file.copy(
+  from = x$eset,
+  to = x$output,
+  overwrite = TRUE
+))
 
