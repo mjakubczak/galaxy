@@ -3,7 +3,9 @@ from __future__ import print_function
 
 import binascii
 import gzip
+import json
 import logging
+import openpyxl
 import os
 import shutil
 import struct
@@ -1093,6 +1095,15 @@ class Xlsx(Binary):
     """Class for Excel 2007 (xlsx) files"""
     file_ext = "xlsx"
 
+    MetadataElement(name = "sheet_names", 
+                    default = [], 
+                    desc = "Sheet names", 
+                    param = ListParameter, 
+                    readonly = True, 
+                    visible = True, 
+                    optional = False, 
+                    no_value = [])
+
     def sniff( self, filename ):
         # Xlsx is compressed in zip format and must not be uncompressed in Galaxy.
         try:
@@ -1104,6 +1115,28 @@ class Xlsx(Binary):
         except:
             return False
 
+    def set_peek(self, dataset, is_multi_byte = False):
+        if not dataset.dataset.purged:
+            sheetNames = dataset.metadata.sheet_names
+            dataset.blurb = "Sheets: %s" % len(sheetNames)
+            dataset.peek = "Sheet names: " + ', '.join(sn for sn in sheetNames)
+
+        else:
+            dataset.blurb = 'file purged from disk'
+            dataset.peek = 'file does not exist'
+
+    def set_meta(self, dataset, **kwd):
+        try:
+            sheetNames = self._get_sheet_names(dataset.file_name)
+        except:
+            sheetNames = []
+
+        dataset.metadata.sheet_names = sheetNames
+
+    def _get_sheet_names(self, filename):
+        cmd = ["R", "--slave", "-e spicyScript::getXlsxSheetNames(\"" + filename + "\")"]
+        x = subprocess.check_output(cmd, universal_newlines=True, stderr=subprocess.STDOUT)
+        return json.loads(x)
 
 Binary.register_sniffable_binary_format("xlsx", "xlsx", Xlsx)
 
@@ -1163,6 +1196,166 @@ class RData( Binary ):
 
 Binary.register_sniffable_binary_format('RData', 'RData', RData)
 
+class rds( Binary ):
+    """R single datatype implementation"""
+    file_ext = "rds"
+
+    MetadataElement(name = "R_class", 
+                    default = "", 
+                    param = MetadataParameter, 
+                    desc = "R object class", 
+                    readonly = True, 
+                    visible = True, 
+                    optional = False, 
+                    no_value = "NULL")
+    MetadataElement(name = "is_valid", 
+                    default = False, 
+                    param = MetadataParameter, 
+                    desc = "Is valid?", 
+                    readonly = True, 
+                    visible = True, 
+                    optional = False, 
+                    no_value = False)
+
+    def sniff(self, filename):
+        rds_header_bin = "X\n"
+        rds_header_ascii = "A\n"
+
+        try:
+            gzip_header = gzip.open(filename).read(2) #compressed header
+            if (gzip_header == rds_header_bin) or (gzip_header == rds_header_ascii):
+                return True
+            
+            ucmp_header = open(filename).read(2) #uncompressed header
+            if (ucmp_header == rds_header_bin) or (ucmp_header == rds_header_ascii):
+                return True
+
+        except:
+            return False
+
+    def set_peek(self, dataset, is_multi_byte = False):
+        if not dataset.dataset.purged:
+            if dataset.metadata.is_valid:
+                dataset.peek = dataset.metadata.R_class + " R object"
+            else:
+                dataset.peek = "File is broken!"
+
+    def set_meta(self, dataset, **kwd):
+        try:
+            x = self._get_Rclass(dataset.file_name)
+            dataset.metadata.R_class = x
+            dataset.metadata.is_valid = True
+        except:
+            dataset.metadata.is_valid = False
+
+    def _get_Rclass(self, filename):
+        cmd = ["R", "--slave", "-e spicyScript::getObjectClass(\"" + filename + "\")"]
+        x = subprocess.check_output(cmd, universal_newlines=True, stderr=subprocess.STDOUT)
+        return json.loads(x)
+
+class ExpressionSet( rds ):
+    """Bioconductor data set implementation"""
+    file_ext = 'expression_set'
+
+    MetadataElement(name = "nobs", 
+                    default = 0, 
+                    param = MetadataParameter, 
+                    desc = "Number of observations", 
+                    readonly = True, 
+                    visible = True, 
+                    optional = False, 
+                    no_value = 0)
+    MetadataElement(name = "nvar", 
+                    default = 0, 
+                    param = MetadataParameter, 
+                    desc = "Number of variables", 
+                    readonly = True, 
+                    visible = True, 
+                    optional = False, 
+                    no_value = 0)
+    MetadataElement(name = "pheno_cols", 
+                    default = [], 
+                    param = ListParameter, 
+                    desc = "phenoData columns", 
+                    readonly = True, 
+                    visible = True, 
+                    optional = False, 
+                    no_value = [])
+    MetadataElement(name = "is_training_dataset", 
+                    default = False, 
+                    param = MetadataParameter, 
+                    desc = "Is training dataset?", 
+                    readonly = True, 
+                    visible = True, 
+                    optional = False, 
+                    no_value = False)
+    MetadataElement(name = "discr_col", 
+                    default = "", 
+                    param = MetadataParameter, 
+                    desc = "Discriminatory column", 
+                    readonly = True, 
+                    visible = True, 
+                    optional = True, 
+                    no_value = "")
+    MetadataElement(name = "groups", 
+                    default = [], 
+                    desc = "Groups", 
+                    param = ListParameter, 
+                    readonly = True, 
+                    visible = True, 
+                    optional = True, 
+                    no_value = [])
+
+    def sniff(self, filename):
+        isRds = super(ExpressionSet, self).sniff(filename)
+        if isRds:
+            try:
+                Rclass = super(ExpressionSet, self)._get_Rclass(filename)
+                return Rclass == "ExpressionSet"
+            except:
+                return False
+        else:
+            return False
+
+    def set_peek(self, dataset, is_multi_byte = False):
+        if not dataset.dataset.purged:
+            dataset.blurb = 'Observations: %s\nVariables: %s' % (dataset.metadata.nobs, dataset.metadata.nvar)
+            dataset.peek = 'Training dataSet: %s' % dataset.metadata.is_training_dataset
+
+            if dataset.metadata.is_training_dataset:
+                dataset.peek = dataset.peek \
+                               + '\nGroups: ' \
+                               + ', '.join(p for p in dataset.metadata.groups) \
+                               + '\nDiscriminatory column: ' \
+                               + dataset.metadata.discr_col
+
+        else:
+            dataset.blurb = 'file purged from disk'
+            dataset.peek = 'file does not exist'
+
+    def set_meta(self, dataset, **kwd):
+        eset_meta = self._get_eset_meta_from_rds(dataset.file_name, dataset.metadata.discr_col)
+
+        dims = eset_meta.get("dims", {})
+        dataset.metadata.nvar = dims.get("nvar", 0)
+        dataset.metadata.nobs = dims.get("nobs", 0)
+        dataset.metadata.R_class = "ExpressionSet"
+        dataset.metadata.is_valid = True
+        dataset.metadata.is_training_dataset = eset_meta.get("isTrainingDataset", False)
+        dataset.metadata.pheno_cols = eset_meta.get("phenoCols", []) 
+
+        if dataset.metadata.is_training_dataset:
+            dataset.metadata.discr_col = eset_meta.get("discrCol", "")
+            dataset.metadata.groups = eset_meta.get("groups", [])
+
+    def _get_eset_meta_from_rds(self, filename, discrCol):
+        cmd = ["R", "--slave", "-e spicyScript::getEsetMeta(\"" + filename + "\",discrCol=\"" + discrCol + "\")"]
+        x = subprocess.check_output(cmd, universal_newlines=True, stderr=subprocess.STDOUT)
+
+        return json.loads(x)
+
+Binary.register_sniffable_binary_format('expression_set', 'expression_set', ExpressionSet)
+Binary.register_sniffable_binary_format('rds', 'rds', rds)
 
 class OxliBinary(Binary):
 

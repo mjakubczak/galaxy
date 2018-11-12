@@ -100,4 +100,8 @@
     <tool file="plotting/boxplot.xml" />
     <tool file="maf/vcf_to_maf_customtrack.xml" />
   </section>
+  <section id="spicy" name="Spicy Tools">
+    <tool file="spicy/trainModel.xml" />
+    <tool file="spicy/testModel.xml" />
+  </section>
 </toolbox>

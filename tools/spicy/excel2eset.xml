@@ -1,0 +1,45 @@
+<tool id="spicy_excel2eset" name="Convert xlsx to Eset" version="1.0.0">
+
+  <description>
+    to use it in spicy workflow
+  </description>
+
+  <command><![CDATA[
+    Rscript excel2eset_script.R
+    -m $model
+    #for input in $inputs
+      -i input_name:$input.input_name,filename:$input.dataset
+    #end for
+    -o $predicted_classes
+  ]]></command>
+
+  <inputs>
+    <param name="model" type="data" format="spcmf" label="Choose trained model" help="Choose the model first"/>
+
+    <repeat name="inputs" title="Model test inputs" default="0">
+      <param name="input_name" type="select" label="Input name">
+        <options>
+          <filter type="data_meta" ref="model" key="inputs_names"/>
+        </options>
+      </param>
+
+      <param name="dataset" type="data" format="expression_set" label="Choose test input dataset" help="The chosen file must be consistent with the selected input."/>
+    </repeat>
+  </inputs>
+
+  <outputs>
+    <data format="tsv" name="predicted_classes"/>
+  </outputs>
+
+  <help>
+**What it does:**
+This tool is designed to use the trained model to predict classes of the new samples. It requires as many inputs (ExpressionSets), as in the provided model. Test datasets must be consistent with the training datasets.
+
+**Details:**
+Choose the trained model first and then insert model test inputs. Input names are obtained from the provided model dynamicly.
+
+**What it returns:**
+Table with the predicted class for each sample from test datasets.
+
+  </help>
+</tool>

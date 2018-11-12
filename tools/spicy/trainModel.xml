@@ -1,0 +1,44 @@
+<tool id="spicy_trainModel" name="Train model" version="1.0.0">
+
+  <description>
+    for further analysis
+  </description>
+
+  <command><![CDATA[
+    /mnt/biotest/exec/mjakubczak/spicy/R-3.3.2/bin/Rscript /mnt/biotest/exec/mjakubczak/spicy/scripts/spicy_train.R
+    #for input in $inputs
+      -i input_name:$input.input_name,filename:$input.dataset,discr_col:$input.dataset.metadata.discr_col
+    #end for
+    -m $model
+    -o $trained_model
+  ]]></command>
+
+  <inputs>
+    <param name="model" type="data" format="spcmf" label="Choose model" help="Choose the model first"/>
+
+    <repeat name="inputs" title="Model train inputs" default="0">
+      <param name="input_name" type="select" label="Input name">
+        <options>
+          <filter type="data_meta" ref="model" key="inputs_names"/>
+        </options>
+      </param>
+
+      <param name="dataset" type="data" format="expression_set" label="Choose train input dataset" help="The chosen file must be consistent with the selected input"/>
+    </repeat>
+  </inputs>
+
+  <outputs>
+    <data format="spcmf" name="trained_model"/>
+  </outputs>
+
+  <help>
+**What it does:**
+This tool performs the training of the provided model. It requires as many inputs (ExpressionSets), as defined in the model. 
+
+**Details:**
+Choose the model first and then insert model train inputs. Input names are obtained from the provided model dynamicly.
+
+**What it returns:**
+Trained model, which can be used for the new samples classification.
+  </help>
+</tool>

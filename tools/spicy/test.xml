@@ -1,0 +1,37 @@
+<tool id="spicy_test" name="testowy tool" version="1.0.0">
+
+  <description>
+    dla debuga
+  </description>
+
+  <command><![CDATA[
+    #import json
+
+    #set $inputData = []
+    #for input in $inputs
+        $inputData.append({"input_name": str($input.input_name), "filename": str($input.dataset)})
+    #end for
+
+    #set $lista = json.dumps({"model": str($model), "inputs": $inputData, "output": str($predicted_classes)})
+
+    Rscript $__tool_directory__/test_script.R -j '$lista'
+  ]]></command>
+
+  <inputs>
+    <param name="model" type="data" format="xlsx" label="Wybierz excela" help="Choose the model first"/>
+
+    <repeat name="inputs" title="Testowy repeat" default="0">
+      <param name="input_name" type="select" label="Input name">
+        <options>
+          <filter type="data_meta" ref="model" key="sheet_names"/>
+        </options>
+      </param>
+
+      <param name="dataset" type="data" format="expression_set" label="Choose test input dataset"/>
+    </repeat>
+  </inputs>
+
+  <outputs>
+    <data format="txt" name="predicted_classes"/>
+  </outputs>
+</tool>
