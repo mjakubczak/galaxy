@@ -127,4 +127,7 @@
     <tool file="spicy/useModel.xml" />
     <tool file="spicy/test.xml" />
   </section>
+  <section name="MyTools" id="mTools">
+    <tool file="myTools/toolExample.xml" />
+  </section>
 </toolbox>

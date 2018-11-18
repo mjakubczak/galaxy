@@ -21,6 +21,7 @@
             'bootstrap-tour',
         )}
         ${ page_setup() }
+        <link href="/static/style/custom/diagram/diagram.css" rel="stylesheet" type="text/css" />
     </head>
 
     <body scroll="no" class="full-content">
@@ -41,6 +42,12 @@
         ${ js_disabled_warning() }
 
         ## js libraries and bundled js app
+        <script src="/static/scripts/custom/diagram/d3.v4.min.js" type="text/javascript"></script>
+        <script src="/static/scripts/custom/diagram/form-parser.js" type="text/javascript"></script>
+        <script src="/static/scripts/custom/diagram/diagram.js" type="text/javascript"></script>
+        <script src="/static/scripts/custom/diagram/diagram-loader.js" type="text/javascript"></script>
+        <script src="/static/scripts/custom/main.js" type="text/javascript"></script>
+
         ${ h.js(
             'bundled/libs.bundled',
             'bundled/' + js_app_name + '.bundled'

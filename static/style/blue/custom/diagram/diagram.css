@@ -1,0 +1,273 @@
+#contentWrapper {
+  position: absolute;
+}
+
+#diagramBox {
+  position: relative;
+  text-align:center;
+}
+
+#svgDiagramWrapper {
+  width: 100%;
+  height: 400px;
+  position: relative;
+}
+
+#diagramSettings {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  border: 1px solid black;
+  display: none;
+  padding: 15px 10px 10px 10px;
+  overflow-y: auto;
+}
+
+#loadDiagramJSON {
+  width: 70%;
+  margin:0;
+  background-color: rgba(255, 255, 255, 0.8);
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  z-index: 1;
+  border: 1px solid black;
+  display: none;
+  padding: 15px 10px 10px 10px;
+}
+
+#loadDiagramJSON h2 {
+  font-size: 16px;
+}
+
+#loadDiagramJSON textarea {
+  width: 100%;
+  overflow-y: auto;
+  resize: none;
+  margin: 5px;
+}
+
+#getDiagramJSON {
+  width: 70%;
+  margin:0;
+  background-color: rgba(255, 255, 255, 0.8);
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  z-index: 1;
+  border: 1px solid black;
+  display: none;
+  padding: 15px 10px 10px 10px;
+}
+
+#getDiagramJSON textarea {
+  width: 100%;
+  overflow-y: auto;
+  resize: none;
+  margin: 5px;
+}
+
+#getDiagramJSON h2 {
+  font-size: 16px;
+}
+
+#diagramMenu {
+  text-align:center;
+}
+
+.diagramBtn {
+  margin-top: 10px;
+}
+
+svg.dynamicDiagram {
+  border: 1px solid black;
+}
+
+.draggable {
+  cursor: move;
+}
+
+rect.blockElem {
+  fill: #e0d9d5;
+  stroke: grey;
+  stroke-width: 3;
+  opacity: 0.8;
+}
+
+.blockLabel {
+  -webkit-user-select: none;  
+  -moz-user-select: none;    
+  -ms-user-select: none;      
+  user-select: none;
+}
+
+text.blockLabel {
+  font-family: "Arial";
+  fill: black;
+  text-transform: uppercase;
+}
+
+.blockName {
+  -webkit-user-select: none;  
+  -moz-user-select: none;    
+  -ms-user-select: none;      
+  user-select: none;
+}
+
+text.blockName {
+  font-family: "Verdana";
+  font-weight: bold;
+  fill: black;
+}
+
+line.arrowLine {
+  stroke: grey;
+  stroke-width: 3;
+}
+
+#triangle {
+  stroke-width: 0;
+  fill: grey;
+}
+
+.block.selected > rect.blockElem  {
+  stroke: #064970;
+}
+
+.svgBtn {
+  cursor: pointer;
+}
+
+.svgBtn > rect.btnBody {
+  fill: #eee;
+  stroke: #999;
+}
+
+.svgBtn.active > rect.btnBody {
+  fill: #bbb;
+  stroke: #777;
+}
+
+.svgBtn:hover > rect.btnBody {
+  fill: #ddd;
+  stroke: #888;
+}
+
+.svgBtn.active:hover > rect.btnBody {
+  fill: #bbb;
+  stroke: #777;
+}
+
+.hidden {
+  display: none;
+}
+
+.blockHandle {
+  fill: grey;
+  opacity: 0.5;
+  cursor: alias;
+}
+
+.blockHandle:hover {
+  opacity: 1;
+}
+
+.deleteBtn {
+  display: none;
+}
+
+.block:hover > .deleteBtn.active {
+  display: block;
+}
+
+g.arrow:hover > .deleteBtn.active {
+  display: block;
+}
+
+.deleteBtn.active:hover {
+  cursor: pointer;
+}
+
+.diagramBtn {
+  height: 30px;
+  margin: 3px 3px 0px 0px;
+}
+
+.blockElem {
+  fill-opacity: 0.5;
+  stroke-opacity: 0.75;
+}
+
+.blockInput > .blockElem {
+  fill: orange;
+  stroke: orange;
+}
+
+
+.blockOutput > .blockElem {
+  fill: blue;
+  stroke: blue;
+}
+
+
+.blockSelect > .blockElem {
+  fill: red;
+  stroke: red;
+}
+
+
+.blockScale > .blockElem {
+ fill: green;
+ stroke: green;
+}
+
+
+.blockMerge > .blockElem {
+ fill: aqua;
+ stroke: aqua;
+}
+
+
+.blockClassify > .blockElem  {
+  fill: magenta;  
+  stroke: magenta;
+}
+
+img.diagramCloseBtn {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  z-index: 1;
+}
+
+.selectWrapper {
+  border-left: 5px solid #DFE5F9;
+  padding-left: 5px;
+}
+
+#diagramSettingsWrapper {
+  padding: 5px 5px 10px 0px;
+}
+
+#diagramSettingsWrapper h1 {
+  font-size: 16px;
+}
+
+#diagramSettingsWrapper h2 {
+  font-size: 12px;
+}
+
+#diagramSettingsWrapper input[type=text] {
+  width: 100%;
+}
+
+#diagramSettingsWrapper select {
+  width: 100%;
+}

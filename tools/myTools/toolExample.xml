@@ -1,0 +1,19 @@
+<tool id="fa_gc_content_1" name="Compute GC content" version="0.1.0">
+  <description>for each sequence in a file</description>
+	<command>
+		<![CDATA[
+			echo '$diagram1' > ~/abc
+		]]>
+	</command>
+  <inputs>
+    <param name="diagram1" type="diagram" label="Diagram"/>
+  </inputs>
+  <outputs>
+    <data format="tabular" name="output" />
+  </outputs>
+
+  <help>
+A block diagram.
+  </help>
+
+</tool>

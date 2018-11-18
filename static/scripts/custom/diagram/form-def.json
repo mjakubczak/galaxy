@@ -1,0 +1,202 @@
+{
+  "each": {
+    "elements":[
+      {
+        "label":"Name",
+        "name":"name",
+        "type":"text"
+      }
+    ]
+  },
+  "forms": {
+    "input": {
+      "label":"Input",
+      "elements":[]
+    },
+    "output": {
+      "label":"Output",
+      "elements":[]
+    },
+    "scale": {
+      "label":"Scaling",
+      "elements":[
+        {
+          "label":"Scaling method",
+          "name":"scaling_method",
+          "type":"select",
+          "options": [
+            {
+              "value":"Zscore",
+              "label":"Z-scores",
+              "form":{}
+            }
+          ]
+        }
+      ]
+    },
+    "select": {
+      "label": "Selection",
+      "elements":[
+        {
+          "label":"Selection method",
+          "name":"selection_method",
+          "type":"select",
+          "options": [
+            {
+              "value":"Ttest",
+              "label":"T-test based selection",
+              "form":{
+                "elements": [
+                  {
+                    "label":"Number of features to extract",
+                    "name":"nFeatures",
+                    "type":"integer",
+                    "value":"20",
+                    "min":"0",
+                    "max":"100"
+                  },
+                  {
+                    "label":"Confidence level",
+                    "name":"conf_level",
+                    "type":"float",
+                    "value":"0.05",
+                    "min":"0",
+                    "max":"1"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "classify": {
+      "label":"Classification",
+      "elements":[
+        {
+          "label":"Classification method",
+          "name":"classification_method",
+          "type":"select",
+          "options": [
+            {
+              "value":"Svm",
+              "label":"Support Vectors Machine (SVM)",
+              "form":{
+                "elements":[
+                  {
+                    "label":"Kernel type",
+                    "name":"Svm_kernel",
+                    "type":"select",
+                    "options": [
+                      {
+                        "label":"Radial",
+                        "value":"radial",
+                        "form":{}
+                      },
+                      {
+                        "label":"Polynomial",
+                        "value":"polynomial",
+                        "form":{
+                          "elements": [
+                            {
+                              "label":"Degree",
+                              "name":"degree",
+                              "type":"integer",
+                              "value":"3",
+                              "min":"1",
+                              "max":"10"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "label":"Linear",
+                        "value":"linear",
+                        "form":{}
+                      },
+                      {
+                        "label":"Sigmoid",
+                        "value":"sigmoid",
+                        "form":{}
+                      }
+                    ]
+                  },
+                  {
+                    "label":"Cost",
+                    "name":"cost",
+                    "type":"float",
+                    "value":"1",
+                    "min":"0",
+                    "max":"1000"
+                  },
+                  {
+                    "label":"Tolerance",
+                    "name":"tolerance",
+                    "type":"float",
+                    "value":"0.001",
+                    "min":"0",
+                    "max":"1"
+                  },
+                  {
+                    "label":"Epsilon",
+                    "name":"epsilon",
+                    "type":"float",
+                    "value":"0.1",
+                    "min":"0",
+                    "max":"1"
+                  },
+                  {
+                    "label":"Scale",
+                    "name":"scale",
+                    "type":"boolean",
+                    "checked":"true"
+                  },
+                  {
+                    "label":"Shrinking",
+                    "name":"shrinking",
+                    "type":"boolean",
+                    "checked":"true"
+                  },
+                  {
+                    "label":"Fitted",
+                    "name":"fitted",
+                    "type":"boolean",
+                    "checked":"true"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "merge":{
+      "label": "Merge",
+      "elements":[
+        {
+          "label":"Merge selection method",
+          "name":"merge_selection_method",
+          "type":"select",
+          "options": [
+            {
+              "value":"Union",
+              "label":"Features union",
+              "form":{
+                "elements": [
+                  {
+                    "label":"Number of features to extract",
+                    "name":"nFeatures",
+                    "type":"integer",
+                    "value":"20",
+                    "min":"0",
+                    "max":"100"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

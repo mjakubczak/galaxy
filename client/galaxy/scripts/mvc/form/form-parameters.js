@@ -6,8 +6,9 @@ define(['utils/utils',
         'mvc/ui/ui-select-content',
         'mvc/ui/ui-select-library',
         'mvc/ui/ui-select-ftp',
-        'mvc/ui/ui-color-picker'],
-    function( Utils, Ui, SelectContent, SelectLibrary, SelectFtp, ColorPicker ) {
+        'mvc/ui/ui-color-picker',
+        'mvc/ui/ui-diagram'],
+    function( Utils, Ui, SelectContent, SelectLibrary, SelectFtp, ColorPicker, BlockDiagram ) {
 
     // create form view
     return Backbone.Model.extend({
@@ -28,7 +29,8 @@ define(['utils/utils',
             'hidden_data'       : '_fieldHidden',
             'baseurl'           : '_fieldHidden',
             'library_data'      : '_fieldLibrary',
-            'ftpfile'           : '_fieldFtp'
+            'ftpfile'           : '_fieldFtp',
+            'diagram'           : '_fieldDiagram'
         },
 
         /** Returns an input field for a given field type */
@@ -171,6 +173,14 @@ define(['utils/utils',
                 info        : input_def.info
             });
         },
+
+ 	    /** Diagram field */
+        _fieldDiagram: function( input_def ) {
+            return new BlockDiagram({
+	            id          : 'field-' + input_def.id,
+	            onchange    : input_def.onchange
+	        });
+	    },
 
         /** Boolean field */
         _fieldBoolean: function( input_def ) {
