@@ -176,7 +176,7 @@ define(['utils/utils',
 
  	    /** Diagram field */
         _fieldDiagram: function( input_def ) {
-            return new BlockDiagram({
+            return new BlockDiagram.View({
 	            id          : 'field-' + input_def.id,
 	            onchange    : input_def.onchange
 	        });

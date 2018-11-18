@@ -640,13 +640,24 @@ class DiagramToolParameter( ToolParameter ):
 	"""
 	
     def __init__( self, tool, input_source ):
+        self.defaultModelDir = input_source.get( "default_model_file", None )
+
         input_source = ensure_input_source( input_source )
         ToolParameter.__init__( self, tool, input_source )
         self.value = input_source.get( 'value' )
-        #self.hidden = True
 
     def get_initial_value( self, trans, other_values ):
-        return self.value
+        defaultValue = json.loads( '{}' )
+
+        if self.value is not None:
+            return self.value
+        elif self.defaultModelDir is not None:
+            try:
+                return json.loads( open( self.defaultModelDir ).read())
+            except:
+                return defaultValue
+        else:
+            defaultValue
 
     def get_label( self ):
         return None

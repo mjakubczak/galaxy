@@ -6,7 +6,7 @@
 		]]>
 	</command>
   <inputs>
-    <param name="diagram1" type="diagram" label="Diagram"/>
+    <param name="diagram1" type="diagram" label="Diagram" default_model_file="tools/myTools/default-model.json"/>
   </inputs>
   <outputs>
     <data format="tabular" name="output" />

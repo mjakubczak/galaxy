@@ -1,4 +1,4 @@
-var Diagram = function(width, height, form_config_file, style_root){
+var Diagram = function(id){
   
   // DOM elements
   var svg = null;
@@ -481,7 +481,7 @@ var Diagram = function(width, height, form_config_file, style_root){
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
-  
+
   function getJSON() {
     return JSON.stringify(diagramElements);
   }
@@ -541,3 +541,4 @@ var Diagram = function(width, height, form_config_file, style_root){
     loadJSON:loadJSON
   }
 }
+
