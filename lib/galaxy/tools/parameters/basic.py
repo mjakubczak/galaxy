@@ -634,25 +634,25 @@ class HiddenToolParameter( ToolParameter ):
         return None
 
 
-	class DiagramToolParameter( ToolParameter ):
-	    """
-	    A block diagram.
-	    """
+class DiagramToolParameter( ToolParameter ):
+    """
+	A block diagram.
+	"""
 	
-	    def __init__( self, tool, input_source ):
-	        input_source = ensure_input_source( input_source )
-	        ToolParameter.__init__( self, tool, input_source )
-	        self.value = input_source.get( 'value' )
-	        #self.hidden = True
-	
-	    def get_initial_value( self, trans, other_values ):
-	        return self.value
-	
-	    def get_label( self ):
-	        return None
-	
-	    def to_param_dict_string( self, value, other_values={} ):
-	        return value
+    def __init__( self, tool, input_source ):
+        input_source = ensure_input_source( input_source )
+        ToolParameter.__init__( self, tool, input_source )
+        self.value = input_source.get( 'value' )
+        #self.hidden = True
+
+    def get_initial_value( self, trans, other_values ):
+        return self.value
+
+    def get_label( self ):
+        return None
+
+    def to_param_dict_string( self, value, other_values={} ):
+        return value
 
 class ColorToolParameter( ToolParameter ):
     """
